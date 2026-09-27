@@ -1,0 +1,37 @@
+{% load static %}
+<header class="navbar">
+    <div class="navbar-left">
+        <a href="{% url 'home' %}" class="logo">Insta<span>Quick</span></a>
+        <a href="{% url 'food:list' %}" class="nav-link">Food</a>
+        <a href="{% url 'grocery:list' %}" class="nav-link">Grocery</a>
+    </div>
+
+    <form class="navbar-search" action="{% url 'home' %}" method="get">
+        <input type="text" name="q" placeholder="Search for food, groceries, restaurants..." value="{{ query|default:'' }}">
+        <button type="submit">🔍</button>
+    </form>
+
+    <div class="navbar-right">
+        <a href="{% url 'orders:cart' %}" class="cart-icon">
+            🛒 <span class="badge">{{ food_cart_count|add:grocery_cart_count }}</span>
+        </a>
+
+        {% if user.is_authenticated %}
+            <div class="profile-dropdown">
+                <button class="profile-btn" onclick="toggleProfileMenu()">👤 {{ user.username }}</button>
+                <div class="profile-menu" id="profileMenu">
+                    <a href="{% url 'accounts:profile' %}">Profile</a>
+                    <a href="{% url 'accounts:help' %}">Help</a>
+                    <a href="{% url 'accounts:contact' %}">Contact</a>
+                    <a href="{% url 'accounts:profile' %}">Settings</a>
+                    <a href="{% url 'accounts:profile' %}">Change Details</a>
+                    <a href="{% url 'accounts:coupons' %}">Coupons</a>
+                    <a href="{% url 'accounts:orders' %}">Orders</a>
+                    <a href="{% url 'accounts:logout' %}" class="logout-link">Logout</a>
+                </div>
+            </div>
+        {% else %}
+            <a href="{% url 'accounts:login' %}" class="login-btn">👤 Login</a>
+        {% endif %}
+    </div>
+</header>

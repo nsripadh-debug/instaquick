@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="section">
+    <h2>{{ restaurant.name }}</h2>
+    <p class="muted">{{ restaurant.address }} &bull; ⭐ {{ restaurant.rating }}</p>
+    <div class="card-grid">
+        {% for item in items %}
+        <div class="card">
+            <span class="veg-dot {% if item.is_veg %}veg{% else %}nonveg{% endif %}"></span>
+            <h3>{{ item.name }}</h3>
+            <p class="price">₹{{ item.price }}</p>
+            <a class="btn-add" href="{% url 'orders:add_to_cart' 'food' item.id %}">Add to Cart</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

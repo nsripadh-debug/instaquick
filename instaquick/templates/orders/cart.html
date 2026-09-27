@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="section cart-page">
+
+    <div class="cart-block">
+        <h2>🍔 Food Cart</h2>
+        {% for item in food_cart.items.all %}
+        <div class="cart-row">
+            <span>{{ item.product.name }} x {{ item.quantity }}</span>
+            <span>₹{{ item.subtotal }}</span>
+            <a href="{% url 'orders:remove_from_cart' item.id %}" class="remove-link">✕</a>
+        </div>
+        {% empty %}<p class="muted">Your food cart is empty.</p>{% endfor %}
+        {% if food_cart.items.all %}
+        <p class="cart-total">Total: ₹{{ food_cart.total }}</p>
+        <a href="{% url 'orders:checkout' 'food' %}" class="btn-primary">Checkout Food Order</a>
+        {% endif %}
+    </div>
+
+    <div class="cart-block">
+        <h2>🛒 Grocery Cart</h2>
+        {% for item in grocery_cart.items.all %}
+        <div class="cart-row">
+            <span>{{ item.product.name }} x {{ item.quantity }}</span>
+            <span>₹{{ item.subtotal }}</span>
+            <a href="{% url 'orders:remove_from_cart' item.id %}" class="remove-link">✕</a>
+        </div>
+        {% empty %}<p class="muted">Your grocery cart is empty.</p>{% endfor %}
+        {% if grocery_cart.items.all %}
+        <p class="cart-total">Total: ₹{{ grocery_cart.total }}</p>
+        <a href="{% url 'orders:checkout' 'grocery' %}" class="btn-primary">Checkout Grocery Order</a>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

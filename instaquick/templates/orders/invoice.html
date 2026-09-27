@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="section invoice-page" id="invoiceArea">
+    <div class="invoice-box">
+        <div class="invoice-header">
+            <h2>Insta<span>Quick</span></h2>
+            <p>Invoice #{{ order.id }} &bull; {{ order.created_at|date:"d M Y, h:i A" }}</p>
+        </div>
+
+        <p><strong>Billed to:</strong> {{ order.customer.username }}</p>
+        <p><strong>Delivery Address:</strong> {{ order.delivery_address }}</p>
+
+        <table class="data-table">
+            <tr><th>Item</th><th>Price</th><th>Qty</th><th>Subtotal</th></tr>
+            {% for item in order.items.all %}
+            <tr><td>{{ item.name }}</td><td>₹{{ item.price }}</td><td>{{ item.quantity }}</td><td>₹{{ item.subtotal }}</td></tr>
+            {% endfor %}
+        </table>
+
+        <div class="invoice-totals">
+            <p>Subtotal: ₹{{ order.subtotal }}</p>
+            <p>Discount: -₹{{ order.discount }}</p>
+            <p>Delivery Fee: ₹{{ order.delivery_fee }}</p>
+            <p class="grand-total">Total: ₹{{ order.total }}</p>
+            <p>Payment: {{ order.payment_method }} ({{ order.payment_status }})</p>
+        </div>
+    </div>
+
+    <button onclick="window.print()" class="btn-primary no-print">🖨 Print Invoice</button>
+    <a href="{% url 'orders:track_delivery' order.id %}" class="btn-primary no-print">Track My Order</a>
+</div>
+{% endblock %}

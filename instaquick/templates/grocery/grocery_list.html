@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grocery-layout">
+    <aside class="category-sidebar">
+        <h4>Categories</h4>
+        <a href="{% url 'grocery:list' %}" class="{% if not active_category %}active-chip{% endif %}">All</a>
+        {% for c in categories %}
+        <a href="?category={{ c.slug }}" class="{% if active_category == c.slug %}active-chip{% endif %}">
+            {{ c.icon }} {{ c.name }}
+        </a>
+        {% endfor %}
+    </aside>
+
+    <div class="card-grid">
+        {% for item in items %}
+        <div class="card">
+            {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}">{% else %}<div class="img-placeholder"></div>{% endif %}
+            <h3>{{ item.name }}</h3>
+            <p class="muted">{{ item.category.name }}{% if item.subcategory %} / {{ item.subcategory.name }}{% endif %}</p>
+            <p class="price">₹{{ item.price }}</p>
+            <a class="btn-add" href="{% url 'orders:add_to_cart' 'grocery' item.id %}">Add to Cart</a>
+        </div>
+        {% empty %}<p>No items found.</p>{% endfor %}
+    </div>
+</div>
+{% endblock %}

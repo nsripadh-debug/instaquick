@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="auth-wrap">
+    <form method="post" class="auth-card">
+        {% csrf_token %}
+        <h2>Login to InstaQuick</h2>
+        <label>Username</label>
+        <input type="text" name="username" required>
+        <label>Password</label>
+        <input type="password" name="password" required>
+        <button type="submit" class="btn-primary">Login</button>
+        <p class="auth-switch">Not registered? <a href="{% url 'accounts:register' %}">Register</a></p>
+    </form>
+</div>
+{% endblock %}

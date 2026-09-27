@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="section">
+    <h2>Checkout - {{ cart_type|title }} Order</h2>
+
+    <form method="post" class="checkout-form">
+        {% csrf_token %}
+
+        <label>Delivery Address</label>
+        <input type="text" name="address" id="addressInput" required placeholder="House no, street, area">
+        <div id="checkoutMap" style="height:220px;border-radius:10px;margin:10px 0;"></div>
+        <input type="hidden" name="latitude" id="lat">
+        <input type="hidden" name="longitude" id="lng">
+
+        <label>Coupon Code</label>
+        <input type="text" name="coupon_code" placeholder="e.g. WELCOME50">
+
+        <label>Payment Method</label>
+        <div class="payment-options">
+            <label class="pay-option"><input type="radio" name="payment_method" value="COD" checked> 💵 Cash on Delivery</label>
+            <label class="pay-option"><input type="radio" name="payment_method" value="UPI"> 📱 UPI</label>
+            <label class="pay-option"><input type="radio" name="payment_method" value="CARD"> 💳 Debit/Credit Card</label>
+        </div>
+
+        <div class="order-summary">
+            <p>Subtotal: ₹{{ cart.total }}</p>
+            <p>Delivery Fee: ₹25</p>
+        </div>
+
+        <button type="submit" class="btn-primary">Place Order</button>
+    </form>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&callback=initCheckoutMap" async defer></script>
+<script>
+function initCheckoutMap(){
+    const center = {lat: 17.3850, lng: 78.4867};
+    const map = new google.maps.Map(document.getElementById("checkoutMap"), {zoom: 13, center});
+    const marker = new google.maps.Marker({position: center, map, draggable: true});
+    document.getElementById("lat").value = center.lat;
+    document.getElementById("lng").value = center.lng;
+    marker.addListener("dragend", () => {
+        const pos = marker.getPosition();
+        document.getElementById("lat").value = pos.lat();
+        document.getElementById("lng").value = pos.lng();
+    });
+}
+</script>
+{% endblock %}

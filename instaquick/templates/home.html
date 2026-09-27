@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<section class="hero">
+    <h1>Instant Food & Grocery, Delivered Fast</h1>
+    <p>Order your favourite food or daily groceries and track them live.</p>
+</section>
+
+<!-- ============ FOOD DELIVERY SECTION ============ -->
+<section class="section">
+    <div class="section-header">
+        <h2>🍔 Food Delivery</h2>
+        <a href="{% url 'food:list' %}" class="see-all">See all</a>
+    </div>
+    <div class="card-grid">
+        {% for item in food_items %}
+        <div class="card">
+            {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}">{% else %}
+            <div class="img-placeholder"></div>{% endif %}
+            <span class="veg-dot {% if item.is_veg %}veg{% else %}nonveg{% endif %}"></span>
+            <h3>{{ item.name }}</h3>
+            <p class="price">₹{{ item.price }}</p>
+            <a class="btn-add" href="{% url 'orders:add_to_cart' 'food' item.id %}">Add to Cart</a>
+        </div>
+        {% empty %}<p>No food items yet. Add some from django-administration.</p>{% endfor %}
+    </div>
+</section>
+
+<!-- ============ GROCERY DELIVERY SECTION ============ -->
+<section class="section">
+    <div class="section-header">
+        <h2>🛒 Grocery Delivery</h2>
+        <a href="{% url 'grocery:list' %}" class="see-all">See all</a>
+    </div>
+    <div class="card-grid">
+        {% for item in grocery_items %}
+        <div class="card">
+            {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}">{% else %}
+            <div class="img-placeholder"></div>{% endif %}
+            <h3>{{ item.name }}</h3>
+            <p class="price">₹{{ item.price }}</p>
+            <a class="btn-add" href="{% url 'orders:add_to_cart' 'grocery' item.id %}">Add to Cart</a>
+        </div>
+        {% empty %}<p>No grocery items yet. Add some from django-administration.</p>{% endfor %}
+    </div>
+</section>
+
+<!-- ============ RECOMMENDATIONS ============ -->
+<section class="section recommend">
+    <div class="section-header"><h2>✨ Recommended for you</h2></div>
+    <div class="card-grid">
+        {% for item in recommended_food %}
+        <div class="card"><h3>{{ item.name }}</h3><p class="price">₹{{ item.price }}</p></div>
+        {% endfor %}
+        {% for item in recommended_grocery %}
+        <div class="card"><h3>{{ item.name }}</h3><p class="price">₹{{ item.price }}</p></div>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

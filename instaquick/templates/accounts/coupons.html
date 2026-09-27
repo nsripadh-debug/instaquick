@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="section">
+    <h2>Available Coupons</h2>
+    <div class="card-grid">
+        {% for c in coupons %}
+        <div class="card coupon-card">
+            <h3>{{ c.code }}</h3>
+            <p>{{ c.discount_percent }}% off on orders above ₹{{ c.min_order_value }}</p>
+        </div>
+        {% empty %}<p>No active coupons right now.</p>{% endfor %}
+    </div>
+</div>
+{% endblock %}
